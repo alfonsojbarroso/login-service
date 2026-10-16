@@ -1,1 +1,14 @@
-spring.application.name=login-service
+spring:
+  application:
+    name: login-service
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/auth_db
+
+jwt:
+  secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+  expiration: 86400000 # 24 horas en milisegundos
+
+api:
+  base-path: api/v1/auth

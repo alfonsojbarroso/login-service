@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import com.login.service.constants.Constants;
 import com.login.service.dto.JwtResponse;
 import com.login.service.dto.LoginRequest;
 import com.login.service.dto.RegisterRequest;
@@ -18,7 +19,7 @@ import com.login.service.util.JwtUtil;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("${api.base-path}")
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -37,7 +38,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (userRepository.findByUsername(request.username()).isPresent()) {
-            return ResponseEntity.badRequest().body(new ResponseMessage("Error: El nombre de usuario ya está en uso."));
+            return ResponseEntity.badRequest().body(new ResponseMessage(Constants.USERNAME_ALREADY_EXISTS));
         }
 
         UserDocument user = new UserDocument();
@@ -47,7 +48,7 @@ public class AuthController {
         user.setRoles(List.of("ROLE_USER"));
 
         userRepository.save(user);
-        return ResponseEntity.ok(new ResponseMessage("Usuario registrado exitosamente."));
+        return ResponseEntity.ok(new ResponseMessage(Constants.USER_REGISTERED_SUCCESSFULLY));
     }
 
     @PostMapping("/login")
